@@ -160,7 +160,7 @@ namespace Survarium_Simple_Importer
 
 				}
 
-				for(int i = 0; i < meshes.Count; i++)
+				for(int i = 0; i < textures.Count; i++)
 				{
 					Model model = new Model();
 					model.Mesh_name = meshes[i];
@@ -205,9 +205,12 @@ namespace Survarium_Simple_Importer
 					//Normals[i].Z *= -1;
 					reader.ReadSingle();
 					reader.ReadSingle();// Skip tangets & binormals
-
-					model.UV[i].X = readHalf(reader);
-					model.UV[i].Y = 1.0f-readHalf(reader);
+				
+					model.UV[i].X = readHalf(reader);				
+					model.UV[i].Y = -readHalf(reader);
+					// Автоисправление UV
+					if(model.UV[i].X < 0.0f) model.UV[i].X += 1.0f; 
+					if(model.UV[i].Y < 0.0f) model.UV[i].Y += 1.0f; 
 				}
 
 				if(model_v == 28)
